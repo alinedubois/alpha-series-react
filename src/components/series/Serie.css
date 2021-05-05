@@ -1,0 +1,10 @@
+.image-serie {
+    height: 250px;
+    margin-top: 50px;
+    transition: 0.5s ease-in-out;
+}
+
+.image-serie:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}

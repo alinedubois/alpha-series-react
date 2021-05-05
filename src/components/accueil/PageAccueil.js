@@ -1,4 +1,4 @@
-import {VignettesPlateformes} from "./VignettesPlateformes";
+import {ChoixPlateforme} from "./ChoixPlateforme";
 import "./PageAccueil.css";
 
 export const PageAccueil = () => {
@@ -7,7 +7,7 @@ export const PageAccueil = () => {
 
             <h1 className="titre-accueil">Veuillez choisir votre plateforme</h1>
 
-            <VignettesPlateformes/>
+            <ChoixPlateforme/>
 
         </div>
     )

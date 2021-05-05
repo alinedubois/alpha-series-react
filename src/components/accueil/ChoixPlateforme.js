@@ -1,8 +1,8 @@
 import {Plateforme} from "./Plateforme";
 import {useEffect, useState} from "react";
-import "./ChoixPlateformes.css";
+import "./ChoixPlateforme.css";
 
-export const VignettesPlateformes = () => {
+export const ChoixPlateforme = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [plateformes, setPlateformes] = useState([]);
