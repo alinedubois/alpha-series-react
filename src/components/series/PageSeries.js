@@ -5,11 +5,12 @@ import {Plateforme} from "../accueil/Plateforme";
 import {Serie} from "./Serie";
 
 export const PageSeries = () => {
-    let { id } = useParams();
+    let {id} = useParams();
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(null);
     const [series, setSeries] = useState([]);
+    const [recherche, setRecherche] = useState("");
 
 
     useEffect(() => {
@@ -33,16 +34,37 @@ export const PageSeries = () => {
     } else {
         return (
             <div className="pageSeries">
-                {series
-                    .map((serie, index) =>
-                        <Serie
-                            key={`serie-${index}`}
-                            id={serie.id}
-                            title={serie.title}
-                            poster={serie.poster}
-                        />
-                    )}
+
+                <div className="filtreSeries">
+                    <input type="text"
+                           value={recherche}
+                           onChange={(event => setRecherche(event.target.value))}
+                           placeholder={"Recherche"}
+                           autoFocus
+                    />
+                </div>
+
+                <div className="affichageSeries">
+                    {series
+                        .filter(serie => {
+                            if (recherche === '') {
+                                return true
+                            } else {
+                                return serie.title.toLowerCase().includes(recherche.toLowerCase())
+                            }
+
+                        })
+                        .map((serie, index) =>
+                            <Serie
+                                key={`serie-${index}`}
+                                id={serie.id}
+                                title={serie.title}
+                                poster={serie.poster}
+                            />
+                        )}
+                </div>
             </div>
         );
+
     }
 }
