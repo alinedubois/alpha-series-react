@@ -1,47 +1,90 @@
 import "./PageSeries.css";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Plateforme} from "../accueil/Plateforme";
 import {Serie} from "./Serie";
+import {FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {Error} from "../Error";
 
 export const PageSeries = () => {
     let {id} = useParams();
 
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState(null);
+    const [seriesLoaded, setSeriesLoaded] = useState(false);
+    const [genresLoaded, setGenresLoaded] = useState(false);
+    const [seriesError, setSeriesError] = useState(null);
+    const [genresError, setGenresError] = useState(null);
     const [series, setSeries] = useState([]);
     const [recherche, setRecherche] = useState("");
+    const [genres, setGenres] = useState([]);
+    const [genreSelectionne, setGenreSelectionne] = useState("");
 
 
     useEffect(() => {
         fetch(`https://api.betaseries.com/search/shows?svods=${id}&key=2e8cf8325587`)
             .then((res) => res.json())
             .then((result) => {
-                    setIsLoaded(true);
+                    setSeriesLoaded(true);
                     setSeries(result.shows);
                 },
                 (error) => {
-                    setIsLoaded(true);
-                    setError(error);
+                    setSeriesLoaded(true);
+                    setSeriesError(error);
+                }
+            )
+    }, [id])
+
+    useEffect(() => {
+        fetch(`https://api.betaseries.com/shows/genres?key=2e8cf8325587`)
+            .then((res) => res.json())
+            .then((result) => {
+                    setGenresLoaded(true);
+                    setGenres(result.genres);
+                },
+                (error) => {
+                    setGenresLoaded(true);
+                    setGenresError(error);
                 }
             )
     }, [])
 
-    if (error) {
-        return <div>Erreur : {error.message}</div>;
-    } else if (!isLoaded) {
-        return <div>Chargement des séries...</div>;
+
+    if (seriesError) {
+        return <Error error={seriesError}/>;
+    } else if (genresError) {
+        return <Error error={genresError}/>
+    } else if (!seriesLoaded || !genresLoaded) {
+        return <div>Chargement en cours...</div>;
     } else {
         return (
             <div className="pageSeries">
 
                 <div className="filtreSeries">
-                    <input type="text"
-                           value={recherche}
-                           onChange={(event => setRecherche(event.target.value))}
-                           placeholder={"Recherche"}
-                           autoFocus
+                    <TextField label="Recherche"
+                               value={recherche}
+                               onChange={(event => setRecherche(event.target.value))}
+                               autoFocus
                     />
+
+                    <FormControl>
+                        <InputLabel id="select-genre-label">Genre</InputLabel>
+                        <Select className="select-genre"
+                                labelId="select-genre-label"
+                                id="select-genre"
+                                value={genreSelectionne}
+                                onChange={(event => setGenreSelectionne(event.target.value))}
+                                autoWidth
+                        >
+                            <MenuItem value="">
+                                Aucun
+                            </MenuItem>
+                            {Object.keys(genres)
+                                .map((genre, index) =>
+                                    <MenuItem
+                                        key={`genre-${index}`}
+                                        value={genre}>{genres[genre]}
+                                    </MenuItem>
+                                )}
+                        </Select>
+                    </FormControl>
                 </div>
 
                 <div className="affichageSeries">

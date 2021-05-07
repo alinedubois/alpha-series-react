@@ -4,3 +4,12 @@
     gap: 50px;
     justify-content: center;
 }
+
+.select-genre {
+    min-width: 120px;
+    margin-left: 20px;
+}
+
+#select-genre-label {
+    margin-left: 20px;
+}
