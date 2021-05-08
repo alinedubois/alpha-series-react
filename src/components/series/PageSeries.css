@@ -13,3 +13,12 @@
 #select-genre-label {
     margin-left: 20px;
 }
+
+.bouton-series-recentes {
+    margin-left: 70px !important;
+}
+
+.filtreSeries {
+    display: flex;
+    justify-content: center;
+}

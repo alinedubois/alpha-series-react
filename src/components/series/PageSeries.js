@@ -2,7 +2,7 @@ import "./PageSeries.css";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Serie} from "./Serie";
-import {FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import {Error} from "../Error";
 
 export const PageSeries = () => {
@@ -16,6 +16,7 @@ export const PageSeries = () => {
     const [recherche, setRecherche] = useState("");
     const [genres, setGenres] = useState([]);
     const [genreSelectionne, setGenreSelectionne] = useState("");
+    const [afficherSeriesRecentes, setAfficherSeriesRecentes] = useState(false);
 
 
     useEffect(() => {
@@ -85,10 +86,34 @@ export const PageSeries = () => {
                                 )}
                         </Select>
                     </FormControl>
+
+                    <Button
+                        className="bouton-series-recentes"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setAfficherSeriesRecentes(!afficherSeriesRecentes)}>
+                        {afficherSeriesRecentes === true ? "Toutes les séries" : "Séries récentes"}
+                    </Button>
+
                 </div>
 
                 <div className="affichageSeries">
-                    {series
+
+                    {afficherSeriesRecentes === true ? series.filter(serie => {
+                            if (serie.release_date >= 2015){
+                                return true
+                            }
+                            return false
+                        }
+                    )
+                        .map((serie, index) =>
+                            <Serie
+                                key={`serie-${index}`}
+                                id={serie.id}
+                                title={serie.title}
+                                poster={serie.poster}
+                            />
+                        ) : series
                         .filter(serie => {
                             if (recherche === '') {
                                 return true
@@ -105,7 +130,10 @@ export const PageSeries = () => {
                                 poster={serie.poster}
                             />
                         )}
+                    {}
                 </div>
+
+
             </div>
         );
 
