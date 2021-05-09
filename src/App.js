@@ -2,6 +2,7 @@ import './App.css';
 import {PageAccueil} from "./components/accueil/PageAccueil";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {PageSeries} from "./components/series/PageSeries";
+import {PageDetailSerie} from "./components/series/PageDetailSerie";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Switch>
                     <Route exact path='/' component={PageAccueil} />
                     <Route path='/plateforme/:id' component={PageSeries} />
+                    <Route path='/serie/:id' component={PageDetailSerie} />
                 </Switch>
 
             </div>

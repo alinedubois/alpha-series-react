@@ -19,6 +19,7 @@ export const PageSeries = () => {
     const [afficherSeriesRecentes, setAfficherSeriesRecentes] = useState(false);
 
 
+
     useEffect(() => {
         fetch(`https://api.betaseries.com/search/shows?svods=${id}&key=2e8cf8325587`)
             .then((res) => res.json())
@@ -48,6 +49,11 @@ export const PageSeries = () => {
     }, [])
 
 
+    const suppressionSerie = (id) => {
+       const seriesSansCelleSupprimee = series.filter(serie =>serie.id !==id);
+       setSeries(seriesSansCelleSupprimee);
+    }
+
     if (seriesError) {
         return <Error error={seriesError}/>;
     } else if (genresError) {
@@ -55,6 +61,7 @@ export const PageSeries = () => {
     } else if (!seriesLoaded || !genresLoaded) {
         return <div>Chargement en cours...</div>;
     } else {
+
         return (
             <div className="pageSeries">
 
@@ -112,6 +119,7 @@ export const PageSeries = () => {
                                 id={serie.id}
                                 title={serie.title}
                                 poster={serie.poster}
+                                suppressionSerie={suppressionSerie}
                             />
                         ) : series
                         .filter(serie => {
@@ -128,6 +136,7 @@ export const PageSeries = () => {
                                 id={serie.id}
                                 title={serie.title}
                                 poster={serie.poster}
+                                suppressionSerie={suppressionSerie}
                             />
                         )}
                     {}
