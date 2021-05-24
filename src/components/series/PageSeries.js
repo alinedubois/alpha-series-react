@@ -137,6 +137,7 @@ export const PageSeries = () => {
                                 title={serie.title}
                                 poster={serie.poster}
                                 suppressionSerie={suppressionSerie}
+                                plateformeId={id}
                             />
                         )}
                     {}

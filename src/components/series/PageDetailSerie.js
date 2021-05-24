@@ -2,16 +2,20 @@ import "./PageDetailSerie.css";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Error} from "../Error";
+import {Button} from "@material-ui/core";
+import {ChevronLeft, FavoriteBorder} from "@material-ui/icons";
+import Rating from '@material-ui/lab/Rating';
+
 
 export const PageDetailSerie = () => {
-    let {id} = useParams();
+    let {plateformeId, serieId} = useParams();
 
     const [detailSerie, setDetailSerie] = useState(null);
     const [detailSerieLoaded, setDetailSerieLoaded] = useState(false);
     const [detailSerieError, setDetailSerieError] = useState(null);
 
     useEffect(() => {
-        fetch(`https://api.betaseries.com/shows/display?id=${id}&key=2e8cf8325587`)
+        fetch(`https://api.betaseries.com/shows/display?id=${serieId}&key=2e8cf8325587`)
             .then((res) => res.json())
             .then((result) => {
                     setDetailSerie(result.show);
@@ -21,8 +25,8 @@ export const PageDetailSerie = () => {
                     setDetailSerieError(error);
                     setDetailSerieLoaded(true);
                 }
-            ).catch(error =>                console.log("toto"))
-    }, [id]);
+            ).catch(error => console.log("toto"))
+    }, [serieId]);
 
     if (detailSerieError) {
         return <Error error={detailSerieError}/>;
@@ -32,19 +36,33 @@ export const PageDetailSerie = () => {
 
         return (
 
-            <div className="PageDetailSerie" /*onClick={()=>suppressionSerie(id)}*/>
+            <div className="PageDetailSerie">
+
+                <ChevronLeft className="back"/>
+
                 <div className="details-serie">
-                    <img src={detailSerie?.images.poster} alt={detailSerie?.title}/>
+                    <div className="image-favori">
+                        <img className="image" src={detailSerie?.images.poster} alt={detailSerie?.title}/>
+
+                    </div>
+
                     <div className="caracteristiques-serie">
                         <div className="titre-serie">{detailSerie?.title}</div>
-                        <div className="date-creation">{detailSerie?.creation}</div>
-                        <div className="nombre-saisons-episodes">{detailSerie?.seasons}, {detailSerie?.episodes}</div>
-                        <div className="genres">
-                            {/*{Object.keys(detailSerie.genres).map(genre => detailSerie.genres[genre])}*/}
+                        <div className="date-creation">Date de première diffusion : {detailSerie?.creation}</div>
+                        <div className="nombre-saisons">{detailSerie?.seasons} saisons</div>
+                        <div className="nombre-episodes">{detailSerie?.episodes} épisodes</div>
+                        <div className="genres">Genre(s) :&#160;
+                            {Object.keys(detailSerie.genres).map(genre => detailSerie.genres[genre]).join(', ')}
+                        </div>
+                        <Rating name="read-only" value={detailSerie.notes.mean} readOnly/>
+                        <div className="favori">
+                            <FavoriteBorder/>
                         </div>
                     </div>
                 </div>
-                <div className="description-serie">{detailSerie?.description}</div>
+                <div className="resume-serie">{detailSerie?.description}</div>
+                <div className="trailer"></div>
+
             </div>
         )
     }

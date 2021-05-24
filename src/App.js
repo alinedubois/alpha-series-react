@@ -13,8 +13,8 @@ function App() {
 
                 <Switch>
                     <Route exact path='/' component={PageAccueil} />
-                    <Route path='/plateforme/:id' component={PageSeries} />
-                    <Route path='/serie/:id' component={PageDetailSerie} />
+                    <Route exact path='/plateforme/:id' component={PageSeries} />
+                    <Route exact path='/plateforme/:plateformeId/serie/:serieId' component={PageDetailSerie} />
                 </Switch>
 
             </div>
