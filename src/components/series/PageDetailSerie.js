@@ -5,6 +5,8 @@ import {Error} from "../Error";
 import {Button} from "@material-ui/core";
 import {ChevronLeft, FavoriteBorder} from "@material-ui/icons";
 import Rating from '@material-ui/lab/Rating';
+import {Link} from "react-router-dom";
+
 
 
 export const PageDetailSerie = () => {
@@ -37,8 +39,10 @@ export const PageDetailSerie = () => {
         return (
 
             <div className="PageDetailSerie">
+                <Link to={`/plateforme/${plateformeId}`}>
+                    <ChevronLeft className="back"/>
+                </Link>
 
-                <ChevronLeft className="back"/>
 
                 <div className="details-serie">
                     <div className="image-favori">
