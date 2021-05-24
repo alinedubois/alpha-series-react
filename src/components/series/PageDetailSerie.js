@@ -8,7 +8,6 @@ import Rating from '@material-ui/lab/Rating';
 import {Link} from "react-router-dom";
 
 
-
 export const PageDetailSerie = () => {
     let {plateformeId, serieId} = useParams();
 
@@ -65,7 +64,11 @@ export const PageDetailSerie = () => {
                     </div>
                 </div>
                 <div className="resume-serie">{detailSerie?.description}</div>
-                <div className="trailer"></div>
+
+                {detailSerie.next_trailer !== null && <iframe className="embed-responsive-item"
+                        src={`https://www.youtube.com/embed/${detailSerie.next_trailer}?rel=0&amp;showinfo=0&amp;enablejsapi=1&amp;origin=https%3A%2F%2Falpha-series.netlify.app`}
+                        frameBorder="0" allow="encrypted-media" allowFullScreen=""></iframe>}
+
 
             </div>
         )

@@ -52,3 +52,9 @@
     text-align: left;
     width: 520px;
 }
+
+.embed-responsive-item {
+    width: 520px;
+    height: 390px;
+
+}
