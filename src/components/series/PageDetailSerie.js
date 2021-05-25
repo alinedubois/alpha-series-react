@@ -2,7 +2,6 @@ import "./PageDetailSerie.css";
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Error} from "../Error";
-import {Button} from "@material-ui/core";
 import {ChevronLeft, FavoriteBorder} from "@material-ui/icons";
 import Rating from '@material-ui/lab/Rating';
 import {Link} from "react-router-dom";
@@ -65,7 +64,7 @@ export const PageDetailSerie = () => {
                 </div>
                 <div className="resume-serie">{detailSerie?.description}</div>
 
-                {detailSerie.next_trailer !== null && <iframe className="embed-responsive-item"
+                {detailSerie.next_trailer !== null && <iframe title="bande-annonce" className="embed-responsive-item"
                         src={`https://www.youtube.com/embed/${detailSerie.next_trailer}?rel=0&amp;showinfo=0&amp;enablejsapi=1&amp;origin=https%3A%2F%2Falpha-series.netlify.app`}
                         frameBorder="0" allow="encrypted-media" allowFullScreen=""></iframe>}
 
