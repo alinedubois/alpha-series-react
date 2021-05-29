@@ -69,6 +69,83 @@ export const PageSeries = () => {
        setSeries(seriesSansCelleSupprimee);
     }
 
+    const Filtres = () => <div className="filtreSeries">
+        <TextField label="Recherche"
+                   value={recherche}
+                   onChange={(event => setRecherche(event.target.value))}
+                   autoFocus
+        />
+
+        <FormControl>
+            <InputLabel id="select-genre-label">Genre</InputLabel>
+            <Select className="select-genre"
+                    labelId="select-genre-label"
+                    id="select-genre"
+                    value={genreSelectionne}
+                    onChange={(event => setGenreSelectionne(event.target.value as string))}
+                    autoWidth
+            >
+                <MenuItem value="">
+                    Aucun
+                </MenuItem>
+                {Object.keys(genres)
+                    .map((genre, index) =>
+                        <MenuItem
+                            key={`genre-${index}`}
+                            value={genre}>{genres[genre]}
+                        </MenuItem>
+                    )}
+            </Select>
+        </FormControl>
+
+        <Button
+            className="bouton-series-recentes"
+            variant="contained"
+            color="primary"
+            onClick={() => setAfficherSeriesRecentes(!afficherSeriesRecentes)}>
+            {afficherSeriesRecentes === true ? "Toutes les séries" : "Séries récentes"}
+        </Button>
+
+    </div>;
+
+    const Series = () => <div className="affichageSeries">
+
+        {afficherSeriesRecentes === true ? series.filter(serie => {
+                if (serie.release_date >= 2015) {
+                    return true
+                }
+                return false
+            }
+        )
+            .map((serie, index) =>
+                <Serie
+                    key={`serie-${index}`}
+                    id={serie.id}
+                    title={serie.title}
+                    poster={serie.poster}
+                    plateformeId={id}
+                />
+            ) : series
+            .filter(serie => {
+                if (recherche === '') {
+                    return true
+                } else {
+                    return serie.title.toLowerCase().includes(recherche.toLowerCase())
+                }
+
+            })
+            .map((serie, index) =>
+                <Serie
+                    key={`serie-${index}`}
+                    id={serie.id}
+                    title={serie.title}
+                    poster={serie.poster}
+                    plateformeId={id}
+                />
+            )}
+        {}
+    </div>;
+
     if (seriesError) {
         return <ErrorComponent error={seriesError}/>;
     } else if (genresError) {
@@ -76,88 +153,10 @@ export const PageSeries = () => {
     } else if (!seriesLoaded || !genresLoaded) {
         return <div>Chargement en cours...</div>;
     } else {
-
         return (
             <div className="pageSeries">
-
-                <div className="filtreSeries">
-                    <TextField label="Recherche"
-                               value={recherche}
-                               onChange={(event => setRecherche(event.target.value))}
-                               autoFocus
-                    />
-
-                    <FormControl>
-                        <InputLabel id="select-genre-label">Genre</InputLabel>
-                        <Select className="select-genre"
-                                labelId="select-genre-label"
-                                id="select-genre"
-                                value={genreSelectionne}
-                                onChange={(event => setGenreSelectionne(event.target.value as string))}
-                                autoWidth
-                        >
-                            <MenuItem value="">
-                                Aucun
-                            </MenuItem>
-                            {Object.keys(genres)
-                                .map((genre, index) =>
-                                    <MenuItem
-                                        key={`genre-${index}`}
-                                        value={genre}>{genres[genre]}
-                                    </MenuItem>
-                                )}
-                        </Select>
-                    </FormControl>
-
-                    <Button
-                        className="bouton-series-recentes"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setAfficherSeriesRecentes(!afficherSeriesRecentes)}>
-                        {afficherSeriesRecentes === true ? "Toutes les séries" : "Séries récentes"}
-                    </Button>
-
-                </div>
-
-                <div className="affichageSeries">
-
-                    {afficherSeriesRecentes === true ? series.filter(serie => {
-                            if (serie.release_date >= 2015){
-                                return true
-                            }
-                            return false
-                        }
-                    )
-                        .map((serie, index) =>
-                            <Serie
-                                key={`serie-${index}`}
-                                id={serie.id}
-                                title={serie.title}
-                                poster={serie.poster}
-                                plateformeId={id}
-                            />
-                        ) : series
-                        .filter(serie => {
-                            if (recherche === '') {
-                                return true
-                            } else {
-                                return serie.title.toLowerCase().includes(recherche.toLowerCase())
-                            }
-
-                        })
-                        .map((serie, index) =>
-                            <Serie
-                                key={`serie-${index}`}
-                                id={serie.id}
-                                title={serie.title}
-                                poster={serie.poster}
-                                plateformeId={id}
-                            />
-                        )}
-                    {}
-                </div>
-
-
+                <Filtres/>
+                <Series/>
             </div>
         );
 

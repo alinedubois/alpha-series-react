@@ -1,7 +1,7 @@
 import {Plateforme} from "./Plateforme";
 import {useEffect, useState} from "react";
-import "./ChoixPlateforme.css";
 import {Error} from "../Error";
+import styled from "styled-components";
 
 
 interface PlateformeSeries {
@@ -12,7 +12,7 @@ interface PlateformeSeries {
 
 export const ChoixPlateforme = () => {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState<Error|null>(null);
+    const [error, setError] = useState<Error | null>(null);
     const [plateformes, setPlateformes] = useState<PlateformeSeries[]>([]);
 
     useEffect(() => {
@@ -35,21 +35,26 @@ export const ChoixPlateforme = () => {
         return <div>Chargement...</div>;
     } else {
 
+        const VignettesPlateforme = styled.div`
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            justify-content: center;
+        `;
 
         return (
-            <div className="vignettes-plateforme">
+            <VignettesPlateforme>
                 {plateformes
                     .filter((plateforme) => plateforme.logo !== null)
                     .map((plateforme, index) =>
-                    <Plateforme
-                        key={`plateforme-${index}`}
-                    id={plateforme.id}
-                    name={plateforme.name}
-                    logo={plateforme.logo}
-                    />
-                )}
-
-            </div>
+                        <Plateforme
+                            key={`plateforme-${index}`}
+                            id={plateforme.id}
+                            name={plateforme.name}
+                            logo={plateforme.logo}
+                        />
+                    )}
+            </VignettesPlateforme>
         )
     }
 }
