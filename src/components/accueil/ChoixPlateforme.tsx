@@ -1,11 +1,19 @@
 import {Plateforme} from "./Plateforme";
 import {useEffect, useState} from "react";
 import "./ChoixPlateforme.css";
+import {Error} from "../Error";
+
+
+interface PlateformeSeries {
+    id: number;
+    name: string;
+    logo: string;
+}
 
 export const ChoixPlateforme = () => {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState(null);
-    const [plateformes, setPlateformes] = useState([]);
+    const [error, setError] = useState<Error|null>(null);
+    const [plateformes, setPlateformes] = useState<PlateformeSeries[]>([]);
 
     useEffect(() => {
         fetch("https://api.betaseries.com/platforms/services?key=2e8cf8325587")
@@ -22,7 +30,7 @@ export const ChoixPlateforme = () => {
     }, [])
 
     if (error) {
-        return <div>Erreur : {error.message}</div>;
+        return <div>Erreur : {error?.message}</div>;
     } else if (!isLoaded) {
         return <div>Chargement...</div>;
     } else {

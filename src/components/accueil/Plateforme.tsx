@@ -1,7 +1,13 @@
 import "./Plateforme.css";
 import {Link} from "react-router-dom";
 
-export const Plateforme = ({id, name, logo}) => {
+interface PlateformeProps {
+    id: number;
+    name: string;
+    logo: string;
+}
+
+export const Plateforme = ({id, name, logo}: PlateformeProps) => {
     return (
         <Link to={`/plateforme/${id}`}>
             <div className="plateforme">

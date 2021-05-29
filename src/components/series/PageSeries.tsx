@@ -3,18 +3,33 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Serie} from "./Serie";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
-import {Error} from "../Error";
+import {Error, ErrorComponent} from "../Error";
+
+interface PageSerieRouteParams {
+    id : string;
+}
+
+interface ShowsResponse {
+    shows: Show[];
+}
+
+interface Show {
+    id: string;
+    release_date: number;
+    title: string;
+    poster: string;
+}
 
 export const PageSeries = () => {
-    let {id} = useParams();
+    let {id} = useParams<PageSerieRouteParams>();
 
     const [seriesLoaded, setSeriesLoaded] = useState(false);
     const [genresLoaded, setGenresLoaded] = useState(false);
-    const [seriesError, setSeriesError] = useState(null);
-    const [genresError, setGenresError] = useState(null);
-    const [series, setSeries] = useState([]);
+    const [seriesError, setSeriesError] = useState<Error|null>(null);
+    const [genresError, setGenresError] = useState<Error|null>(null);
+    const [series, setSeries] = useState<Show[]>([]);
     const [recherche, setRecherche] = useState("");
-    const [genres, setGenres] = useState([]);
+    const [genres, setGenres] = useState<any|null>(null);
     const [genreSelectionne, setGenreSelectionne] = useState("");
     const [afficherSeriesRecentes, setAfficherSeriesRecentes] = useState(false);
 
@@ -23,7 +38,7 @@ export const PageSeries = () => {
     useEffect(() => {
         fetch(`https://api.betaseries.com/search/shows?svods=${id}&key=2e8cf8325587`)
             .then((res) => res.json())
-            .then((result) => {
+            .then((result: ShowsResponse) => {
                     setSeriesLoaded(true);
                     setSeries(result.shows);
                 },
@@ -49,15 +64,15 @@ export const PageSeries = () => {
     }, [])
 
 
-    const suppressionSerie = (id) => {
+    const suppressionSerie = (id: string) => {
        const seriesSansCelleSupprimee = series.filter(serie =>serie.id !==id);
        setSeries(seriesSansCelleSupprimee);
     }
 
     if (seriesError) {
-        return <Error error={seriesError}/>;
+        return <ErrorComponent error={seriesError}/>;
     } else if (genresError) {
-        return <Error error={genresError}/>
+        return <ErrorComponent error={genresError}/>
     } else if (!seriesLoaded || !genresLoaded) {
         return <div>Chargement en cours...</div>;
     } else {
@@ -78,7 +93,7 @@ export const PageSeries = () => {
                                 labelId="select-genre-label"
                                 id="select-genre"
                                 value={genreSelectionne}
-                                onChange={(event => setGenreSelectionne(event.target.value))}
+                                onChange={(event => setGenreSelectionne(event.target.value as string))}
                                 autoWidth
                         >
                             <MenuItem value="">
@@ -119,7 +134,7 @@ export const PageSeries = () => {
                                 id={serie.id}
                                 title={serie.title}
                                 poster={serie.poster}
-                                suppressionSerie={suppressionSerie}
+                                plateformeId={id}
                             />
                         ) : series
                         .filter(serie => {
@@ -136,7 +151,6 @@ export const PageSeries = () => {
                                 id={serie.id}
                                 title={serie.title}
                                 poster={serie.poster}
-                                suppressionSerie={suppressionSerie}
                                 plateformeId={id}
                             />
                         )}
