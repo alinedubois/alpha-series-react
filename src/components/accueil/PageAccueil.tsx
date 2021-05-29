@@ -1,14 +1,15 @@
 import {ChoixPlateforme} from "./ChoixPlateforme";
-import "./PageAccueil.css";
+import styled from "styled-components";
 
 export const PageAccueil = () => {
+
+    const TitreAccueil = styled.h1`
+        color: white;
+    `;
     return (
-        <div className="page-accueil">
-
-            <h1 className="titre-accueil">Veuillez choisir votre plateforme</h1>
-
+        <div>
+            <TitreAccueil>Veuillez choisir votre plateforme</TitreAccueil>
             <ChoixPlateforme/>
-
         </div>
     )
 }

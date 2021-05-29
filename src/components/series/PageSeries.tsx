@@ -63,12 +63,6 @@ export const PageSeries = () => {
             )
     }, [])
 
-
-    const suppressionSerie = (id: string) => {
-       const seriesSansCelleSupprimee = series.filter(serie =>serie.id !==id);
-       setSeries(seriesSansCelleSupprimee);
-    }
-
     const Filtres = () => <div className="filtreSeries">
         <TextField label="Recherche"
                    value={recherche}
