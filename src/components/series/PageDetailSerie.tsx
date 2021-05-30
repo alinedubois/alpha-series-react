@@ -5,6 +5,7 @@ import {Error, ErrorComponent} from "../Error";
 import {ChevronLeft, FavoriteBorder} from "@material-ui/icons";
 import Rating from '@material-ui/lab/Rating';
 import {Link} from "react-router-dom";
+import styled from "styled-components";
 
 interface PageDetailSerieRouteParams {
     plateformeId : string;
@@ -61,42 +62,96 @@ export const PageDetailSerie = () => {
         return <div>Chargement en cours...</div>;
     } else {
 
+        const PageDetailSerie = styled.div`
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        `;
+
+        const DetailsSerie = styled.div`
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 30px;
+            width: 520px;
+        `;
+
+        const ImageFavori = styled.div`
+            display: flex;
+            flex-direction: column;
+        `;
+
+        const Image = styled.img`
+            width: 250px;
+            height: 350px;
+        `;
+
+        const CaracteristiquesSerie = styled.div`
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            gap: 10px;
+        `;
+
+        const TitreSerie = styled.div`
+            font-size: 40px;
+        `;
+
+        const Favori = styled.div`
+            display: flex;
+            flex-direction: row;
+            color: #ffcd05;
+        `;
+
+        const ResumeSerie = styled.div`
+            text-align: left;
+            width: 520px;
+        `;
+
+        const BandeAnnonce = styled.iframe`
+            width: 520px;
+            height: 390px;
+        `;
+
         return (
 
-            <div className="PageDetailSerie">
+            <PageDetailSerie>
                 <Link to={`/plateforme/${plateformeId}`}>
                     <ChevronLeft className="back"/>
                 </Link>
 
 
-                <div className="details-serie">
-                    <div className="image-favori">
-                        <img className="image" src={detailSerie?.images.poster} alt={detailSerie?.title}/>
+                <DetailsSerie>
+                    <ImageFavori>
+                        <Image src={detailSerie?.images.poster} alt={detailSerie?.title}/>
+                    </ImageFavori>
 
-                    </div>
-
-                    <div className="caracteristiques-serie">
-                        <div className="titre-serie">{detailSerie?.title}</div>
-                        <div className="date-creation">Date de première diffusion : {detailSerie?.creation}</div>
-                        <div className="nombre-saisons">{detailSerie?.seasons} saisons</div>
-                        <div className="nombre-episodes">{detailSerie?.episodes} épisodes</div>
-                        <div className="genres">Genre(s) :&#160;
+                    <CaracteristiquesSerie>
+                        <TitreSerie>{detailSerie?.title}</TitreSerie>
+                        <div>Date de première diffusion : {detailSerie?.creation}</div>
+                        <div>{detailSerie?.seasons} saisons</div>
+                        <div>{detailSerie?.episodes} épisodes</div>
+                        <div>Genre(s) :&#160;
                             {Object.keys(detailSerie?.genres).map((genre: string) => detailSerie?.genres[genre]).join(', ')}
                         </div>
                         <Rating name="read-only" value={detailSerie?.notes.mean} readOnly/>
-                        <div className="favori">
+                        <Favori>
                             <FavoriteBorder/>
-                        </div>
-                    </div>
-                </div>
-                <div className="resume-serie">{detailSerie?.description}</div>
+                        </Favori>
+                    </CaracteristiquesSerie>
+                </DetailsSerie>
+                <ResumeSerie>{detailSerie?.description}</ResumeSerie>
 
-                {detailSerie?.next_trailer !== null && <iframe title="bande-annonce" className="embed-responsive-item"
-                        src={`https://www.youtube.com/embed/${detailSerie?.next_trailer}?rel=0&amp;showinfo=0&amp;enablejsapi=1&amp;origin=https%3A%2F%2Falpha-series.netlify.app`}
-                        frameBorder="0" allow="encrypted-media" allowFullScreen={false}></iframe>}
+                {detailSerie?.next_trailer !== null && <BandeAnnonce
+                    title="bande-annonce"
+                    src={`https://www.youtube.com/embed/${detailSerie?.next_trailer}?rel=0&amp;showinfo=0&amp;enablejsapi=1&amp;origin=https%3A%2F%2Falpha-series.netlify.app`}
+                    frameBorder="0"
+                    allow="encrypted-media"
+                    allowFullScreen={false}></BandeAnnonce>}
 
 
-            </div>
+            </PageDetailSerie>
         )
     }
 }
